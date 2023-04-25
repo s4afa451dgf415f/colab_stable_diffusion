@@ -408,6 +408,7 @@ let imgStorage=(img)=>{
 
   let delay_canvas = function () {
     return new Promise((resolve) => {
+
       //用来判断点击事件进行resolve,因为初始化优先级没那么高，所以不用担心初始化的时候执行
       if(this.shadowRoot.querySelector("#img2maskimg > div.svelte-rlgzoo.fixed-height > div > div:nth-child(2)"))
       {
@@ -641,22 +642,15 @@ let imgStorage=(img)=>{
     //局部重绘监听手机自适应
     let screenWidth = window.screen.width;
     //当屏幕为手机或者平板才会执行
-    if(screenWidth<=768){
+    // if(screenWidth<=768){
     let inpaintButton=await delay_tab_click()
     inpaintButton.onclick=async ()=>{
       let temp=await delay_canvas()
       temp.classList.remove('wrap', 'svelte-yigbas');
-        //???????????????????????为什么会先打印百分之百？
-        // console.log('设置宽高')
-        // temp.querySelectorAll('canvas').forEach(e => e.style.height = '');
-        // temp.querySelectorAll('canvas').forEach(e => {e.style.width = '100%';console.log(e.style.width)});
-      setTimeout(() => { 
-        console.log('设置宽高')
         temp.querySelectorAll('canvas').forEach(e => e.style.height = '');
         temp.querySelectorAll('canvas').forEach(e => {e.style.width = '100%';console.log(e.style.width)});
-      },1000);
     }
-  }
+  // }
       this.shadowRoot.querySelector('[class="tab-nav scroll-hide svelte-1g805jl"]').children[1].click();
       this.shadowRoot.querySelectorAll('#mode_img2img button')[2].click()
       this.shadowRoot.querySelectorAll('#setting_CLIP_stop_at_last_layers input')[0].value = Number(result.Clipskip)
@@ -717,14 +711,16 @@ let imgStorage=(img)=>{
     if (this.result.fillType === "inpaint_tab") {
       inpaintTabFormFill();
     }
+        const changeEvent = new Event("change", {
+    });
 
     //注册图片解析事件
     png_info.addEventListener("change", async (e) => {
       // 获取用户选择的文件
         const png_info_img = await delay_png_change(png_info);
     try{imgStorage(png_info_img)}
+    catch(e){console.log('图太大。将不会被保存到本地，')}
     finally{
-        if(e){console.log('图太大。将不会被保存到本地，')}
         let png_info_blob = await convertDomImageToBlob(png_info_img);
         this.png_info_blob = png_info_blob;
         let res = await readNovelAITag(png_info_blob);
@@ -770,6 +766,11 @@ let imgStorage=(img)=>{
           };
         }
     });
+    png_info.querySelector("div.svelte-rlgzoo.fixed-height > div").addEventListener("drop",()=>{
+      if(png_info.querySelector("div.svelte-rlgzoo.fixed-height > div > div > button:nth-child(2)"))
+      png_info.querySelector("div.svelte-rlgzoo.fixed-height > div > div > button:nth-child(2)").click()
+      png_info.dispatchEvent(changeEvent)
+    })
   }
   document.addEventListener("DOMContentLoaded", async () => {
     //初始化图生图图片
