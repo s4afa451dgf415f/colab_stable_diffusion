@@ -39,5 +39,5 @@
 ### v.1.1.2 (23/04/17)
 - 修复了手机局部绘图图片width过大的问题
 ### v.1.1.1 (23/04/12)
--更新了[CN_tag_trans](https://www.bilibili.com/video/BV1tg4y137mt/?spm_id_from=333.880.my_history.page.click&vd_source=931a87555c05909a4816745522b3ce74)
+- 更新了[CN_tag_trans](https://www.bilibili.com/video/BV1tg4y137mt/?spm_id_from=333.880.my_history.page.click&vd_source=931a87555c05909a4816745522b3ce74)
 - 增加了从png_info图片秒读秒填充的功能
