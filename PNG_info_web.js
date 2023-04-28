@@ -724,9 +724,7 @@ let imgStorage=(img)=>{
         let png_info_blob = await convertDomImageToBlob(png_info_img);
         this.png_info_blob = png_info_blob;
         let res = await readNovelAITag(png_info_blob);
-        this.shadowRoot.querySelector(
-          "#tab_pnginfo > div > div > div:nth-child(2) > div:nth-child(3)"
-        ).innerText = res.length ? res[0].text : "这不是一张stablediffusion图片";
+        this.shadowRoot.querySelector("#component-985 > div.svelte-1ed2p3z").innerHTML = res.length ? res[0].text : "这不是一张stablediffusion图片";
         
         //js对象形式转化
         const result = {};
