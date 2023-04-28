@@ -1,6 +1,6 @@
 # **colab_stable_diffusion_webui**
 -[![](https://img.shields.io/static/v1?message=Open%20in%20Colab&logo=googlecolab&labelColor=5c5c5c&color=0f80c1&label=%20&style=flat)](https://colab.research.google.com/github/s4afa451dgf415f/colab_stable_diffusion/blob/main/%E4%BA%91stable_diffusion(%E4%BF%AE%E5%A4%8D%E6%8C%96%E7%9F%BF%E5%AB%8C%E7%96%91).ipynb)<br>
--CN_tag_trans  from https://www.bilibili.com/video/BV1tg4y137mt/?spm_id_from=333.880.my_history.page.click&vd_source=931a87555c05909a4816745522b3ce74
+
 
 ### 关于谷歌colab
 - 请确认有可以魔法上网的工具，工具用于谷歌colab的机器学习，属于合法范畴。 
@@ -39,4 +39,5 @@
 ### v.1.1.2 (23/04/17)
 - 修复了手机局部绘图图片width过大的问题
 ### v.1.1.1 (23/04/12)
+-更新了[CN_tag_trans](https://www.bilibili.com/video/BV1tg4y137mt/?spm_id_from=333.880.my_history.page.click&vd_source=931a87555c05909a4816745522b3ce74)
 - 增加了从png_info图片秒读秒填充的功能
