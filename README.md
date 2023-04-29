@@ -20,7 +20,7 @@
  - 报错或无法解决的问题请加群710895662
  
 ## Update?
-### v.2.0.1 (23/04/29)
+### v.2.0.2 (23/04/29)
 - 内存泄露问题已解决
 ### v.2.0.1 (23/04/27)
 - 改用了更好更适配的ui系统，来源[anapnoe](https://github.com/anapnoe/stable-diffusion-webui-ux)
