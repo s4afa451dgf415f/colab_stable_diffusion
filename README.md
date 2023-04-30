@@ -22,6 +22,7 @@
 ## Update?
 ### v.2.0.2 (23/04/29)
 - 内存泄露问题已解决
+- 优化了mod管理单元的交互，支持切换文档了
 ### v.2.0.1 (23/04/27)
 - 改用了更好更适配的ui系统，来源[anapnoe](https://github.com/anapnoe/stable-diffusion-webui-ux)
 - 用指令一定程度解决了mod切换内存不足的问题
