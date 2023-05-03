@@ -524,29 +524,29 @@ let imgStorage=(img)=>{
       .querySelector("#txt2img_enable_hr input")
       .dispatchEvent(changeEvent);
 
-    if (!!result.Hiresupscaler) {
-      const inputElement = document.querySelector(
-        '#txt2img_hr_upscaler > label > div > div.wrap-inner> div > input'
-      );
-      const mousevent = new MouseEvent("mousedown", {
-        view: window,
-        bubbles: true,
-        cancelable: true,
-      });
-      const focus = new MouseEvent("focus", {
-        view: window,
-        bubbles: true,
-        cancelable: true,
-      });
-      inputElement.dispatchEvent(focus);
-      queueMicrotask(() => {
-        //将函数加入到任务队列待下一次轮询在执行
-        const listElem = shadowRoot.querySelector(
-          `[data-value="${result.Hiresupscaler}"]`
+      if (!!result.Hiresupscaler) {
+        const inputElement = document.querySelector(
+          '#txt2img_hr_upscaler > label > div > div.wrap-inner> div > input'
         );
-        listElem.dispatchEvent(mousevent);
-      });
-    }
+        const mousevent = new MouseEvent("mousedown", {
+          view: window,
+          bubbles: true,
+          cancelable: true,
+        });
+        const focus = new MouseEvent("focus", {
+          view: window,
+          bubbles: true,
+          cancelable: true,
+        });
+        inputElement.dispatchEvent(focus);
+        queueMicrotask(() => {
+          //将函数加入到任务队列待下一次轮询在执行
+          const listElem = shadowRoot.querySelector(
+            `[data-value="${result.Hiresupscaler}"]`
+          );
+          listElem.dispatchEvent(mousevent);
+        });
+      }
 
     shadowRoot.querySelectorAll("#txt2img_hires_steps input")[0].value =
       Number(result.Hiressteps) || 0;
@@ -729,9 +729,7 @@ let imgStorage=(img)=>{
         let png_info_blob = await convertDomImageToBlob(png_info_img);
         this.png_info_blob = png_info_blob;
         let res = await readNovelAITag(png_info_blob);
-        this.shadowRoot.querySelector(
-          "#tab_pnginfo > div > div > div:nth-child(2) > div:nth-child(3)"
-        ).innerText = res.length ? res[0].text : "这不是一张stablediffusion图片";
+        this.shadowRoot.querySelector("#png_2img_results > div .svelte-1ed2p3z").innerHTML = res.length ? res[0].text : "这不是一张stablediffusion图片";
         
         //js对象形式转化
         const result = {};
