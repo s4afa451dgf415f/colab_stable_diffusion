@@ -21,7 +21,7 @@
 ## Update?
 ### v.2.0.3 (23/05/3)
 - 根据大版本更新修复了脚本
-- 默认UI改回[Automatic111]([https://github.com/anapnoe/stable-diffusion-webui-ux](https://github.com/AUTOMATIC1111/stable-diffusion-webui))，anapnoe为可选择
+- 默认UI改回[Automatic111](https://github.com/AUTOMATIC1111/stable-diffusion-webui)，anapnoe为可选择
 ### v.2.0.2 (23/04/29)
 - 内存泄露问题已解决
 - 优化了mod管理单元的交互，支持切换文档了
