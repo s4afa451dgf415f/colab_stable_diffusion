@@ -526,14 +526,19 @@ let imgStorage=(img)=>{
 
     if (!!result.Hiresupscaler) {
       const inputElement = document.querySelector(
-        "#txt2img_hr_upscaler > label > div > div.wrap-inner.svelte-a6vu2r > div > input"
+        '#txt2img_hr_upscaler > label > div > div.wrap-inner> div > input'
       );
       const mousevent = new MouseEvent("mousedown", {
         view: window,
         bubbles: true,
         cancelable: true,
       });
-      inputElement.dispatchEvent(mousevent);
+      const focus = new MouseEvent("focus", {
+        view: window,
+        bubbles: true,
+        cancelable: true,
+      });
+      inputElement.dispatchEvent(focus);
       queueMicrotask(() => {
         //将函数加入到任务队列待下一次轮询在执行
         const listElem = shadowRoot.querySelector(
@@ -724,7 +729,9 @@ let imgStorage=(img)=>{
         let png_info_blob = await convertDomImageToBlob(png_info_img);
         this.png_info_blob = png_info_blob;
         let res = await readNovelAITag(png_info_blob);
-        this.shadowRoot.querySelector("#component-985 > div.svelte-1ed2p3z").innerHTML = res.length ? res[0].text : "这不是一张stablediffusion图片";
+        this.shadowRoot.querySelector(
+          "#tab_pnginfo > div > div > div:nth-child(2) > div:nth-child(3)"
+        ).innerText = res.length ? res[0].text : "这不是一张stablediffusion图片";
         
         //js对象形式转化
         const result = {};
@@ -764,9 +771,10 @@ let imgStorage=(img)=>{
           };
         }
     });
-    png_info.querySelector("div.svelte-rlgzoo.fixed-height > div").addEventListener("drop",()=>{
-      if(png_info.querySelector("div.svelte-rlgzoo.fixed-height > div > div > button:nth-child(2)"))
-      png_info.querySelector("div.svelte-rlgzoo.fixed-height > div > div > button:nth-child(2)").click()
+    //拖拽
+    png_info.querySelector("#pnginfo_image > div.image-container > div ").addEventListener("drop",()=>{
+      if(document.querySelector("#pnginfo_image > div.image-container > div > div > button:nth-child(2)"))
+      png_info.querySelector("#pnginfo_image > div.image-container > div > div > button:nth-child(2)").click()
       png_info.dispatchEvent(changeEvent)
     })
   }
