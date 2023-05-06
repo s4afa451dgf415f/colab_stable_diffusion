@@ -9,7 +9,7 @@
 - 一天内第一次启动过程约7分钟左右下载插件模型依赖，请耐心等待。之后如果再启动就非常快。 
 - 你也可以电脑魔法上网colab，手机直接打开代码运行后给出的域名就行。
 - 谷歌运行环境为12G 内存15G显存，大显存小内存所以推荐使用半精度进行计算
-- 教程:https://www.bilibili.com/video/BV17h4y1J79g/?spm_id_from=333.788.top_right_bar_window_history.content.click或进群下载
+- 教程:https://www.bilibili.com/video/BV17h4y1J79g/?spm_id_from=333.788.top_right_bar_window_history.content.click;或进群下载
  
  ## 关于sd
  - mod管理单元中lora和checkpoint只需填下载地址即可，你也可以添加一些信息方便管理。
