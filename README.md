@@ -27,6 +27,9 @@
  - there's not enough precision to represent the picture的解决方式是切换其他VAE，或者4、运行时勾选全精度，但生成图的速度会下降一半
 
 ## Update?
+### v.2.0.5 (23/05/14)
+- 优化了下载。用LCS算法对mod的下载进行最小化更新
+- 增加sd原版ui下暗配色为可选启动项
 ### v.2.0.4 (23/05/12)
 - 增加openpose3d插件
 - 增加推荐mod文档下载单元格
