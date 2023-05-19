@@ -27,6 +27,8 @@
  - there's not enough precision to represent the picture的解决方式是切换其他VAE，或者4、运行时勾选全精度，但生成图的速度会下降一半
 
 ## Update?
+### v2.0.5(23/05/19)
+- torch问题已修复
 ### v.2.0.5 (23/05/14)
 - 优化了下载。用LCS算法对mod的下载进行最小化更新
 - 增加sd原版ui下暗配色为可选启动项
