@@ -27,6 +27,9 @@
  - there's not enough precision to represent the picture的解决方式是切换其他VAE，或者4、运行时勾选全精度，但生成图的速度会下降一半
 
 ## Update?
+### v2.0.6(23/05/25)
+- 因[xformers](https://github.com/facebookresearch/xformers)更新到0.0.20取消torch的下载，大幅节省下载时间
+- 新增中译提示词[all-in-one](https://github.com/Physton/sd-webui-prompt-all-in-one)
 ### v2.0.5(23/05/19)
 - torch问题已修复
 ### v.2.0.5 (23/05/14)
