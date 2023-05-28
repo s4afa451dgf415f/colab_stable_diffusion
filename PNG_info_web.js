@@ -380,6 +380,23 @@ let imgStorage=(img)=>{
     });
   };
 
+  let delay_png_downloaded = function (downloadNode) {
+    return new Promise((resolve) => {
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (
+            downloadNode.querySelector("#txt2img_gallery > div.grid-wrap > div")
+          ) {
+            // 取消监听
+            observer.disconnect();
+            resolve(document.querySelector("#txt2img_gallery > div.grid-wrap > div >button >img"));
+          }
+        });
+      });
+      observer.observe(downloadNode, { childList: true, subtree: true });
+    });
+  };
+
   let delay_tab_click = function () {
     return new Promise((resolve) => {
       //用来判断点击事件进行resolve,因为初始化优先级没那么高，所以不用担心初始化的时候执行
@@ -415,7 +432,7 @@ let imgStorage=(img)=>{
         console.log('点击类读取')
         resolve(this.shadowRoot.querySelector("#img2maskimg > div.svelte-rlgzoo.fixed-height > div > div:nth-child(2)"));
       }
-      
+
       this.shadowRoot = document.querySelector("gradio-app");
       const observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
@@ -433,6 +450,8 @@ let imgStorage=(img)=>{
       observer.observe(this.shadowRoot, { childList: true, subtree: true });
     });
   };
+
+  //文生图
   let txt2ImgFormFill = () => {
     shadowRoot=this.shadowRoot
     let result = this.result;
@@ -524,29 +543,29 @@ let imgStorage=(img)=>{
       .querySelector("#txt2img_enable_hr input")
       .dispatchEvent(changeEvent);
 
-      if (!!result.Hiresupscaler) {
-        const inputElement = document.querySelector(
-          '#txt2img_hr_upscaler > label > div > div.wrap-inner> div > input'
+    if (!!result.Hiresupscaler) {
+      const inputElement = document.querySelector(
+        '#txt2img_hr_upscaler > label > div > div.wrap-inner> div > input'
+      );
+      const mousevent = new MouseEvent("mousedown", {
+        view: window,
+        bubbles: true,
+        cancelable: true,
+      });
+      const focus = new MouseEvent("focus", {
+        view: window,
+        bubbles: true,
+        cancelable: true,
+      });
+      inputElement.dispatchEvent(focus);
+      queueMicrotask(() => {
+        //将函数加入到任务队列待下一次轮询在执行
+        const listElem = shadowRoot.querySelector(
+          `[data-value="${result.Hiresupscaler}"]`
         );
-        const mousevent = new MouseEvent("mousedown", {
-          view: window,
-          bubbles: true,
-          cancelable: true,
-        });
-        const focus = new MouseEvent("focus", {
-          view: window,
-          bubbles: true,
-          cancelable: true,
-        });
-        inputElement.dispatchEvent(focus);
-        queueMicrotask(() => {
-          //将函数加入到任务队列待下一次轮询在执行
-          const listElem = shadowRoot.querySelector(
-            `[data-value="${result.Hiresupscaler}"]`
-          );
-          listElem.dispatchEvent(mousevent);
-        });
-      }
+        listElem.dispatchEvent(mousevent);
+      });
+    }
 
     shadowRoot.querySelectorAll("#txt2img_hires_steps input")[0].value =
       Number(result.Hiressteps) || 0;
@@ -585,6 +604,7 @@ let imgStorage=(img)=>{
       .dispatchEvent(inputEvent);
   };
 
+  //图生图
   let img2ImgFormFill = () => {
     let result = this.result;
     const inputEvent = new Event("input");
@@ -596,37 +616,37 @@ let imgStorage=(img)=>{
 
       this.shadowRoot.querySelectorAll('#setting_CLIP_stop_at_last_layers input')[0].value = Number(result.Clipskip)
       this.shadowRoot.querySelectorAll('#setting_CLIP_stop_at_last_layers input')[0].dispatchEvent(inputEvent);
-  
+
       this.shadowRoot.querySelectorAll('#setting_CLIP_stop_at_last_layers input')[1].value = Number(result.Clipskip)
       this.shadowRoot.querySelectorAll('#setting_CLIP_stop_at_last_layers input')[1].dispatchEvent(inputEvent);
-  
+
       this.shadowRoot.querySelector('#img2img_prompt textarea').value = result.prompt
       this.shadowRoot.querySelector('#img2img_prompt textarea').dispatchEvent(inputEvent);
-  
+
       this.shadowRoot.querySelector('#img2img_neg_prompt textarea').value = result.negativePrompt
       this.shadowRoot.querySelector('#img2img_neg_prompt textarea').dispatchEvent(inputEvent);
-  
+
       this.shadowRoot.querySelectorAll('#img2img_steps input')[0].value = Number(result.Steps)
       this.shadowRoot.querySelectorAll('#img2img_steps input')[0].dispatchEvent(inputEvent);
-  
+
       this.shadowRoot.querySelectorAll('#img2img_steps input')[1].value = Number(result.Steps)
       this.shadowRoot.querySelectorAll('#img2img_steps input')[1].dispatchEvent(inputEvent);
-  
+
       this.shadowRoot.querySelectorAll(`[value="${result.Sampler}"]`)[1].checked = true;
       this.shadowRoot.querySelectorAll(`[value="${result.Sampler}"]`)[1].dispatchEvent(changeEvent)
-  
+
       this.shadowRoot.querySelectorAll('#img2img_width input')[0].value = Number(result.Size.split('x')[0])
       this.shadowRoot.querySelectorAll('#img2img_width input')[0].dispatchEvent(inputEvent);
-  
+
       this.shadowRoot.querySelectorAll('#img2img_width input')[1].value = Number(result.Size.split('x')[0])
       this.shadowRoot.querySelectorAll('#img2img_width input')[1].dispatchEvent(inputEvent);
-  
+
       this.shadowRoot.querySelectorAll('#img2img_height input')[0].value = Number(result.Size.split('x')[1])
       this.shadowRoot.querySelectorAll('#img2img_height input')[0].dispatchEvent(inputEvent);
-  
+
       this.shadowRoot.querySelectorAll('#img2img_height input')[1].value = Number(result.Size.split('x')[1])
       this.shadowRoot.querySelectorAll('#img2img_height input')[1].dispatchEvent(inputEvent);
-  
+
       this.shadowRoot.querySelector('#img2img_seed input').value = Number(result.Seed)
       this.shadowRoot.querySelector('#img2img_seed input').dispatchEvent(inputEvent);
       //图生图调用pnginfo的png
@@ -634,10 +654,12 @@ let imgStorage=(img)=>{
     const dataTransfer = new DataTransfer();
     dataTransfer.items.add(file);
     const fileList = dataTransfer.files;
+    console.log([this.shadowRoot.querySelector("#img2img_image input")])
     this.shadowRoot.querySelector("#img2img_image input").files = fileList;
     this.shadowRoot.querySelector('#img2img_image input').dispatchEvent(changeEvent);
   };
 
+  //局部重绘
   let inpaintTabFormFill=async ()=> {
     let result = this.result;
     const inputEvent = new Event("input");
@@ -660,37 +682,37 @@ let imgStorage=(img)=>{
       this.shadowRoot.querySelectorAll('#mode_img2img button')[2].click()
       this.shadowRoot.querySelectorAll('#setting_CLIP_stop_at_last_layers input')[0].value = Number(result.Clipskip)
       this.shadowRoot.querySelectorAll('#setting_CLIP_stop_at_last_layers input')[0].dispatchEvent(inputEvent);
-  
+
       this.shadowRoot.querySelectorAll('#setting_CLIP_stop_at_last_layers input')[1].value = Number(result.Clipskip)
       this.shadowRoot.querySelectorAll('#setting_CLIP_stop_at_last_layers input')[1].dispatchEvent(inputEvent);
-  
+
       this.shadowRoot.querySelector('#img2img_prompt textarea').value = result.prompt
       this.shadowRoot.querySelector('#img2img_prompt textarea').dispatchEvent(inputEvent);
-  
+
       this.shadowRoot.querySelector('#img2img_neg_prompt textarea').value = result.negativePrompt
       this.shadowRoot.querySelector('#img2img_neg_prompt textarea').dispatchEvent(inputEvent);
-  
+
       this.shadowRoot.querySelectorAll('#img2img_steps input')[0].value = Number(result.Steps)
       this.shadowRoot.querySelectorAll('#img2img_steps input')[0].dispatchEvent(inputEvent);
-  
+
       this.shadowRoot.querySelectorAll('#img2img_steps input')[1].value = Number(result.Steps)
       this.shadowRoot.querySelectorAll('#img2img_steps input')[1].dispatchEvent(inputEvent);
-  
+
       this.shadowRoot.querySelectorAll(`[value="${result.Sampler}"]`)[1].checked = true;
       this.shadowRoot.querySelectorAll(`[value="${result.Sampler}"]`)[1].dispatchEvent(changeEvent)
-  
+
       this.shadowRoot.querySelectorAll('#img2img_width input')[0].value = Number(result.Size.split('x')[0])
       this.shadowRoot.querySelectorAll('#img2img_width input')[0].dispatchEvent(inputEvent);
-  
+
       this.shadowRoot.querySelectorAll('#img2img_width input')[1].value = Number(result.Size.split('x')[0])
       this.shadowRoot.querySelectorAll('#img2img_width input')[1].dispatchEvent(inputEvent);
-  
+
       this.shadowRoot.querySelectorAll('#img2img_height input')[0].value = Number(result.Size.split('x')[1])
       this.shadowRoot.querySelectorAll('#img2img_height input')[0].dispatchEvent(inputEvent);
-  
+
       this.shadowRoot.querySelectorAll('#img2img_height input')[1].value = Number(result.Size.split('x')[1])
       this.shadowRoot.querySelectorAll('#img2img_height input')[1].dispatchEvent(inputEvent);
-  
+
       this.shadowRoot.querySelector('#img2img_seed input').value = Number(result.Seed)
       this.shadowRoot.querySelector('#img2img_seed input').dispatchEvent(inputEvent);
       //图生图调用pnginfo的png
@@ -702,6 +724,28 @@ let imgStorage=(img)=>{
     this.shadowRoot.querySelector('#img2maskimg input').dispatchEvent(changeEvent);
   };
 
+
+  let TaggerFormFill=()=>{
+    let result = this.result;
+    const inputEvent = new Event("input");
+    const changeEvent = new Event("change", {
+      bubbles: true,
+    });
+    let taggerNode=null
+      let menu=[...document.querySelector('[class="tab-nav scroll-hide svelte-1g805jl"]').children]
+      menu.forEach(e=>{try{if(e.innerText=="Tag反推(Tagger)")taggerNode=e;throw error()}catch(err){}})
+      console.log(taggerNode)
+      taggerNode.click()
+
+    //   //图生图调用pnginfo的png
+    const file = new File([this.png_info_blob], 'example.png');
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(file);
+    const fileList = dataTransfer.files;
+    console.log([this.shadowRoot.querySelector(" div.image-container > div > input")])
+    this.shadowRoot.querySelector(" div.image-container > div > input").files = fileList;
+    this.shadowRoot.querySelector(" div.image-container > div > input").dispatchEvent(changeEvent);
+  }
 
   //PNGinfo事件
   async function png_info_edit() {
@@ -729,8 +773,25 @@ let imgStorage=(img)=>{
         let png_info_blob = await convertDomImageToBlob(png_info_img);
         this.png_info_blob = png_info_blob;
         let res = await readNovelAITag(png_info_blob);
-        this.shadowRoot.querySelector("#png_2img_results > div .svelte-1ed2p3z").innerHTML = res.length ? res[0].text : "这不是一张stablediffusion图片";
-        
+        if(!res.length){
+          this.shadowRoot.querySelector(
+            "#tab_pnginfo > div > div > div:nth-child(2) > div:nth-child(3)"
+          ).innerText ="这不是一张stablediffusion图片"
+          this.shadowRoot.querySelector("#tagger图生文_tab").style.color='red'
+          //tag反推（tagger）
+        this.shadowRoot.querySelector("#tagger图生文_tab").onclick =
+        () => {
+          this.result.fillType = "inpaint_tab";
+          localStorage.setItem("tempPngInfo", JSON.stringify(this.result));
+          TaggerFormFill();
+        };
+        }
+        else{
+          this.shadowRoot.querySelector("#tagger图生文_tab").style.color=''
+        this.shadowRoot.querySelector(
+          "#tab_pnginfo > div > div > div:nth-child(2) > div:nth-child(3)"
+        ).innerText = res[0].text
+      }
         //js对象形式转化
         const result = {};
         // const match = inputString.match(/(?<=prompt:)(.*)(?=Negative prompt:)/s)[0].trim();]
@@ -776,14 +837,15 @@ let imgStorage=(img)=>{
       png_info.dispatchEvent(changeEvent)
     })
   }
+
   document.addEventListener("DOMContentLoaded", async () => {
     //初始化图生图图片
     if(localStorage.getItem("png_info_img"))
     this.png_info_blob = await readStoragePng(
       localStorage.getItem("png_info_img")
     );
-    
+    //初始化png_info事件
     png_info_edit();
-    
+    //test
   });
 })()
