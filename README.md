@@ -27,6 +27,9 @@
  - there's not enough precision to represent the picture的解决方式是切换其他VAE，或者4、运行时勾选全精度，但生成图的速度会下降一半
 
 ## Update?
+### v2.0.7(23/05/28)
+- 增加生成图片自动保存到本地设备的脚本
+- 图片信息模块读取图片不是sd时，会推荐跳转到tagger模块
 ### v2.0.6(23/05/25)
 - 因[xformers](https://github.com/facebookresearch/xformers)更新到0.0.20取消torch的下载，大幅节省下载时间
 - 新增中译提示词[all-in-one](https://github.com/Physton/sd-webui-prompt-all-in-one)
