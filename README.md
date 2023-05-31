@@ -27,6 +27,8 @@
  - there's not enough precision to represent the picture的解决方式是切换其他VAE，或者4、运行时勾选全精度，但生成图的速度会下降一半
 
 ## Update?
+### v2.0.8(23/06/01)
+- mod下载单元采用线程池并行下载
 ### v2.0.7(23/05/28)
 - 增加生成图片自动保存到本地设备的脚本
 - 图片信息模块读取图片不是sd时，会推荐跳转到tagger模块
