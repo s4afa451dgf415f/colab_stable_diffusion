@@ -774,9 +774,7 @@ let imgStorage=(img)=>{
         this.png_info_blob = png_info_blob;
         let res = await readNovelAITag(png_info_blob);
         if(!res.length){
-          this.shadowRoot.querySelector(
-            "#tab_pnginfo > div > div > div:nth-child(2) > div:nth-child(3)"
-          ).innerText ="这不是一张stablediffusion图片"
+          this.shadowRoot.querySelector("#tab_pnginfo > div > div > div:nth-child(2) > div:nth-child(3)").innerText ="这不是一张stablediffusion图片"
           this.shadowRoot.querySelector("#tagger图生文_tab").style.color='red'
           //tag反推（tagger）
         this.shadowRoot.querySelector("#tagger图生文_tab").onclick =
@@ -788,9 +786,7 @@ let imgStorage=(img)=>{
         }
         else{
           this.shadowRoot.querySelector("#tagger图生文_tab").style.color=''
-        this.shadowRoot.querySelector(
-          "#tab_pnginfo > div > div > div:nth-child(2) > div:nth-child(3)"
-        ).innerText = res[0].text
+          this.shadowRoot.querySelector("#tab_pnginfo > div > div > div:nth-child(2) > div:nth-child(3)").innerText = res[0].text
       }
         //js对象形式转化
         const result = {};

@@ -27,6 +27,9 @@
  - there's not enough precision to represent the picture的解决方式是切换其他VAE，或者4、运行时勾选全精度，但生成图的速度会下降一半
 
 ## Update?
+### v2.0.9(23/06/03)
+- 默认版本改为[Automatic111v1.3.1](https://github.com/AUTOMATIC1111/stable-diffusion-webui/releases/tag/v1.3.1)
+- 对[anapnoe](https://github.com/anapnoe/stable-diffusion-webui-ux)的更新进行了脚本兼容
 ### v2.0.8(23/06/01)
 - mod下载单元采用线程池并行下载
 ### v2.0.7(23/05/28)
