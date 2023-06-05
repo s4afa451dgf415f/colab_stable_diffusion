@@ -16,14 +16,15 @@
 
 <div id="Feature">
 
-<h2>💡 Feature List</h2>
-  - [x] Mod Management System: Manage mods and use thread pool downloading to achieve speed faster than copying to cloud storage without occupying disk space.
-  - [x] Local Image Information Reading Script: Use a JavaScript script to process SD images locally to save time and bandwidth from server interactions while ensuring reliability.
-  - [x] Automatic Image Saving Script: Use a JavaScript script to automatically save generated images, avoiding the hassle of manually saving each image.
-  - [x] Mobile Adaptation: Use media queries and change the global style to avoid misoperation or make it compatible with [anapnoe](https://github.com/anapnoe/stable-diffusion-webui-ux) version.
-  - [x] Initialization of Best Configuration: Initialize the configuration based on the best user experience to solve the hassle of manual configuration when users enter the page.
-  - [x] Use of ngrok tunnel from [Automatic111](https://github.com/AUTOMATIC1111/stable-diffusion-webui) to effectively improve network speed.
-  - [x] Support for custom VAE and plugins, please create folders named "VAE" and "extensions" in your cloud storage and manage them on your own.
+## 💡 Feature List
+- [x] Mod Management System: Manage mods and use thread pool downloading to achieve speed faster than copying to cloud storage without occupying disk space.
+- [x] Local Image Information Reading Script: Use a JavaScript script to process SD images locally to save time and bandwidth from server interactions while ensuring reliability.
+- [x] Automatic Image Saving Script: Use a JavaScript script to automatically save generated images, avoiding the hassle of manually saving each image.
+- [x] Mobile Adaptation: Use media queries and change the global style to avoid misoperation or make it compatible with [anapnoe](https://github.com/anapnoe/stable-diffusion-webui-ux) version.
+- [x] Initialization of Best Configuration: Initialize the configuration based on the best user experience to solve the hassle of manual configuration when users enter the page.
+- [x] Use of ngrok tunnel from [Automatic111](https://github.com/AUTOMATIC1111/stable-diffusion-webui) to effectively improve network speed.
+- [x] Support for custom VAE and plugins, please create folders named "VAE" and "extensions" in your cloud storage and manage them on your own.
+
 </div>
 
 <div id="FAQ">
