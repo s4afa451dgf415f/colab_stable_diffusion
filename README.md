@@ -1,32 +1,65 @@
-# **colab_stable_diffusion_webui**
--[![](https://img.shields.io/static/v1?message=Open%20in%20Colab&logo=googlecolab&labelColor=5c5c5c&color=0f80c1&label=%20&style=flat)](https://colab.research.google.com/github/s4afa451dgf415f/colab_stable_diffusion/blob/main/%E4%BA%91stable_diffusion(%E4%BF%AE%E5%A4%8D%E6%8C%96%E7%9F%BF%E5%AB%8C%E7%96%91).ipynb)<br>
+<h1 align="center">colab_stable_diffusion_webui</h1>
+<div align="center">
+  <div>👇点击图片进入colab👇</div>
+  <a href="https://colab.research.google.com/github/s4afa451dgf415f/colab_stable_diffusion/blob/main/%E4%BA%91stable_diffusion(%E4%BF%AE%E5%A4%8D%E6%8C%96%E7%9F%BF%E5%AB%8C%E7%96%91).ipynb"><img src="./image/README/tmpktq2ywtz.png" width="768" height="512" alt="open in colab"></a> 
+</div>
 
+<div align="center">
+🚀并行下载摇树优化，提供更快的部署🚀<br/>
+🎇可选功能，使用户能够灵活定制🎇<br/>
+✨如果喜欢请点个⭐吧！您的支持就是我持续更新的动力✨<br/>
+ 
+简体中文 | [English](README_EN.md)
 
-### 关于谷歌colab
+[功能列表](#Feature) | [视频演示](https://www.bilibili.com/video/BV17h4y1J79g/?spm_id_from=333.788.top_right_bar_window_history.content.click) | [疑难解答](#FAQ) | [更新日志](#Update) | [预览图](#Preview) 
+</div>
+
+<div id="Feature">
+
+<h2>💡 功能列表</h2>
+  - [x] mod管理系统：可对mod进行管理，并采用线程池下载从而达到不占用网盘空间又优于拷贝云盘的速度
+  - [x] 图片信息本地读取脚本：利用js脚本对sd图片进行本地处理从而节省与服务器交互的时间与流量又确保了可靠性
+  - [x] 图片自动保存脚本:利用js脚本让生成的图片自动保存从而避免手动挨个保存图片的麻烦。
+  - [x] 手机自适应：利用媒体查询和改变全局样式从而避免了误触或使用[anapnoe](https://github.com/anapnoe/stable-diffusion-webui-ux)版本兼容
+  - [x] 初始化最佳配置：根据最佳使用体验进行初始化配置，解决用户进入页面手动配置的麻烦。
+  - [x] 使用[Automatic111](https://github.com/AUTOMATIC1111/stable-diffusion-webui)版本自带的ngrok通道有效的提升网络速度。
+  - [x] 支持自定义的vae与插件，请在云盘新建文件夹VAE与extensions并自行管理
+</div>
+
+<div id="FAQ">
+<h2>🔍 疑难解答</h2>
+<h3>关于谷歌colab</h3> 
+
 - 请确认有可以魔法上网的工具，工具用于谷歌colab的机器学习，属于合法范畴。 
-- 优势：不需要显卡，手机也能用，且云端运行速度快。
+- 优势：不需要显卡，手机也能用，云端运行速度快。缺点：每天登录需要重新部署且有时长限制
 - 此项目为免费开源项目，并将持续维护更新。如果有任何广告动机请举报
+- colab一直免费听良心的，如果觉得生成大图速度慢或时长少或者嫌麻烦也可以支持一下谷歌
 - 由于人数较多，谷歌colab每个号的时间大概为4-6小时左右，多弄几个号在云盘里主号的json给其他号添加编辑权限就实现了所有号共用
 - 一天内第一次启动过程约7分钟左右下载插件模型依赖，请耐心等待。之后如果再启动就非常快。 
-- 你也可以电脑魔法上网colab，手机直接打开代码运行后给出的域名就行。
+- 你也可以电脑运行colab笔记本，手机直接打第四步给出的域名就行。
 - 谷歌运行环境为12G 内存15G显存，大显存小内存所以推荐使用半精度进行计算
-- 教程可以点击链接:https://www.bilibili.com/video/BV17h4y1J79g/?spm_id_from=333.788.top_right_bar_window_history.content.click
 - mod管理单元中lora和checkpoint只需填下载地址即可，你也可以添加一些信息方便管理。
 - 笔记本为单线程，请保证4、单元格处于未运行状态再管理mod。
 - mod管理时建议mod名以"c站mod名（自定义中文名）"的形式进行命名，这样既可以方便搜索c站的sd图，又方便在使用时在lora列表进行搜索
 - 新人不知道下哪些模型可以去推荐模型文档单元下载json文件。
 - 自定义的vae与插件请在云盘新建文件夹VAE与extensions并自行管理。
+- 如果出现此代码为不可执行的代码请勿进行任何操作并等待修复，时长被限制概不负责
 - 晚高峰人数较多，提示连接出错或断线为正常情况，可以尝试使用ngrok管道进行加速。
  
- ## 关于sd
- - 如果图片信息读取图片“不是一张stable diffusion图片”说明作者上传的图片经过了压缩处理，请选择其他图片或者复制文字与种子手动输入
- - 采样方法推荐 DDIM 与DPM++ 2M 高清放大推荐 潜变量(bicubic)与潜变量最邻近
- - 图片可以选择输出在云盘的outputs文件夹里
- - 生成图的速度与执行代码的速度与网速无关，你就算断网几分钟他也在执行
- - 如果要使用手机进行局部绘图请使用Edge浏览器，谷歌浏览器不兼容
- - there's not enough precision to represent the picture的解决方式是切换其他VAE，或者4、运行时勾选全精度，但生成图的速度会下降一半
+<h3>关于stable-diffusion</h3> 
 
-## Update?
+ - 如果图片信息读取图片“不是一张stable diffusion图片”说明作者上传的图片经过了压缩处理，可以复制文字与种子手动输入或者使用tagger图生文
+ - 采样方法推荐 DDIM 与DPM++ 2M 高清放大推荐 潜变量最邻近和ultimate-upscale
+ - 图片可以选择输出在云盘的outputs文件夹里或自动下载
+ - 生成图的速度与执行代码的速度与网速无关，你就算断网几分钟他也在执行
+ - there's not enough precision to represent the picture的解决方式是切换其他VAE，或者4、运行时勾选全精度，但生成图的速度会下降一半
+ - 输入"<"即可调出lora
+ 
+</div>
+
+<div id="Update">
+<h2>📔 更新日志</h2>
+
 ### v2.0.9(23/06/03)
 - 默认版本改为[Automatic111v1.3.1](https://github.com/AUTOMATIC1111/stable-diffusion-webui/releases/tag/v1.3.1)
 - 对[anapnoe](https://github.com/anapnoe/stable-diffusion-webui-ux)的更新进行了脚本兼容
@@ -76,3 +109,10 @@
 ### v.1.1.1 (23/04/12)
 - 更新了[CN_tag_trans](https://www.bilibili.com/video/BV1tg4y137mt/?spm_id_from=333.880.my_history.page.click&vd_source=931a87555c05909a4816745522b3ce74)
 - 增加了从png_info图片秒读秒填充的功能
+</div>
+
+<div id="Preview" align="center">
+<h2 id="Preview">预览图</h2>
+<img src="./image/README/mobilePhone.png" alt="cell phone">
+<img src="./image/README/webUi.png" alt="webui">
+</div>
