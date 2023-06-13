@@ -71,7 +71,7 @@
         if (mutation.target.localName==='img'||(mutation.addedNodes[0]&&mutation.addedNodes[0].localName==='img'))
         {
           // console.log(mutation);
-          t2iState='fufilled';
+          i2iState='fufilled';
           [...ParentNode.querySelectorAll('.thumbnail-item > img')].forEach(resNode=>{
              let nameArr=resNode.src.split('/')
             let name=decodeURIComponent(nameArr[nameArr.length-1])
