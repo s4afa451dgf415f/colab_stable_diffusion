@@ -42,7 +42,7 @@
 - Notebooks are single-threaded, so please make sure that the mod management cell is not running before managing mods.
 - When managing mods, it's recommended to name them in the format of "c-site mod name (custom name)" for easy searching of SD images on c-site and for easy searching in the Lora list when in use.
 - Newcomers who don't know which models to download can go to the "Recommended Model Documentation" cell to download the JSON file.
-- Custom VAE and plugins should be managed in folders named "VAE" and "extensions" in your cloud storage.
+- To load custom VAE and plugins, or models in the cloud drive, please create a new folder "VAE", "extensions", "lora", or "checkpoint" in the cloud drive and manage it yourself
 - If the code is not executable, do not perform any operations and wait for a fix. We are not responsible for any time limitations.
 - There are many users during peak hours, and connection errors or disconnections are normal. You can try to use the ngrok tunnel to speed up the process.
  
@@ -60,6 +60,9 @@
 <div id="Update">
 <h2>📔 Changelog</h2>
 
+### v2.1.0(23/06/17)
+- Also supports reading checkpoint and lora from cloud drive. Please create a new folder "checkpoint" or "lora" in the cloud drive.
+- The model documentation can be placed in any folder in the file directory, and will be recursively searched and read.
 ### v2.0.9(23/06/03)
 - Default version change to[Automatic111v1.3.1](https://github.com/AUTOMATIC1111/stable-diffusion-webui/releases/tag/v1.3.1)
 - Script compatibility updates have been made for[anapnoe](https://github.com/anapnoe/stable-diffusion-webui-ux)updates.

@@ -23,7 +23,7 @@
 - [x] 手机自适应：利用媒体查询和改变全局样式从而避免了误触或使用[anapnoe](https://github.com/anapnoe/stable-diffusion-webui-ux)版本兼容
 - [x] 初始化最佳配置：根据最佳使用体验进行初始化配置，解决用户进入页面手动配置的麻烦。
 - [x] 使用[Automatic111](https://github.com/AUTOMATIC1111/stable-diffusion-webui)版本自带的ngrok通道有效的提升网络速度。
-- [x] 支持自定义的vae与插件，请在云盘新建文件夹VAE与extensions并自行管理
+- [x] 支持自定义的vae与插件，请在云盘新建文件夹"VAE"或"extensions"并自行管理
   
 </div>
 
@@ -43,11 +43,11 @@
 - 笔记本为单线程，请保证4、单元格处于未运行状态再管理mod。
 - mod管理时建议mod名以"c站mod名（自定义中文名）"的形式进行命名，这样既可以方便搜索c站的sd图，又方便在使用时在lora列表进行搜索
 - 新人不知道下哪些模型可以去推荐模型文档单元下载json文件。
-- 自定义的vae与插件请在云盘新建文件夹VAE与extensions并自行管理。
+- 自定义的vae与插件或想加载云盘里的模型请在云盘新建文件夹"VAE"或"extensions"或"lora"或"checkpoint"并自行管理
 - 如果出现此代码为不可执行的代码请勿进行任何操作并等待修复，时长被限制概不负责
 - 晚高峰人数较多，提示连接出错或断线为正常情况，可以尝试使用ngrok管道进行加速。
  
-<h3>关于stable-diffusion</h3> 
+<h3>关于stable-diffusion</h3>
 
  - 如果图片信息读取图片“不是一张stable diffusion图片”说明作者上传的图片经过了压缩处理，可以复制文字与种子手动输入或者使用tagger图生文
  - 采样方法推荐 DDIM 与DPM++ 2M 高清放大推荐 潜变量最邻近和ultimate-upscale
@@ -61,6 +61,9 @@
 <div id="Update">
 <h2>📔 更新日志</h2>
 
+### v2.1.0(23/06/17)
+- 也支持从云盘读取checkpoint和lora,请自行在云盘新建文件夹"checkpoint"、"lora"
+- 模型文档可放在文件目录任意文件夹，将采用递归查找并读取
 ### v2.0.9(23/06/03)
 - 默认版本改为[Automatic111v1.3.1](https://github.com/AUTOMATIC1111/stable-diffusion-webui/releases/tag/v1.3.1)
 - 对[anapnoe](https://github.com/anapnoe/stable-diffusion-webui-ux)的更新进行了脚本兼容
