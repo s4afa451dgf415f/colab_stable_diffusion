@@ -60,6 +60,8 @@
 <div id="Update">
 <h2>📔 Changelog</h2>
 
+### v2.1.1(23/07/22)
+- Using the libtcmalloc included in Colab to fix the compatibility issue with Ubuntu 22.04 that causes memory leaks.
 ### v2.1.0(23/06/17)
 - Also supports reading checkpoint and lora from cloud drive. Please create a new folder "checkpoint" or "lora" in the cloud drive.
 - The model documentation can be placed in any folder in the file directory, and will be recursively searched and read.
