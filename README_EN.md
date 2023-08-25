@@ -60,6 +60,9 @@
 <div id="Update">
 <h2>📔 Changelog</h2>
 
+### v2.2.0(23/08/26)
+- Partially refactored the download management module to support downloading with specified path fields.
+- Upgraded webui to the latest version 1.5.1 and changed 1.3.0 to stable version.
 ### v2.1.2(23/08/07)
 - Optional to load the config.json file from cloud storage
 ### v2.1.1(23/07/22)
