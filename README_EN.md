@@ -60,6 +60,9 @@
 <div id="Update">
 <h2>📔 Changelog</h2>
 
+### v2.2.0(23/09/14)
+- Fixed the bug colab network constantly interruption
+- Added backward compatibility for downloading files from specified paths
 ### v2.2.0(23/08/26)
 - Partially refactored the download management module to support downloading with specified path fields.
 - Upgraded webui to the latest version 1.5.1 and changed 1.3.0 to stable version.
