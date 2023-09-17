@@ -725,28 +725,6 @@ let imgStorage=(img)=>{
   };
 
 
-  // let TaggerFormFill=()=>{
-  //   let result = this.result;
-  //   const inputEvent = new Event("input");
-  //   const changeEvent = new Event("change", {
-  //     bubbles: true,
-  //   });
-  //   let taggerNode=null
-  //     let menu=[...document.querySelector('[class="tab-nav scroll-hide svelte-1g805jl"]').children]
-  //     menu.forEach(e=>{try{if(e.innerText=="Tag反推(Tagger)")taggerNode=e;throw error()}catch(err){}})
-  //     console.log(taggerNode)
-  //     taggerNode.click()
-  //
-  //   //   //图生图调用pnginfo的png
-  //   const file = new File([this.png_info_blob], 'example.png');
-  //   const dataTransfer = new DataTransfer();
-  //   dataTransfer.items.add(file);
-  //   const fileList = dataTransfer.files;
-  //   console.log([this.shadowRoot.querySelector(" div.image-container > div > input")])
-  //   this.shadowRoot.querySelector(" div.image-container > div > input").files = fileList;
-  //   this.shadowRoot.querySelector(" div.image-container > div > input").dispatchEvent(changeEvent);
-  // }
-
   //PNGinfo事件
   async function png_info_edit() {
     let png_info = await delayPng_info();
@@ -775,17 +753,8 @@ let imgStorage=(img)=>{
         let res = await readNovelAITag(png_info_blob);
         if(!res.length){
           this.shadowRoot.querySelector("#tab_pnginfo > div > div > div:nth-child(2) > div:nth-child(3)").innerText ="这不是一张stablediffusion图片"
-          // this.shadowRoot.querySelector("#tagger图生文_tab").style.color='red'
-          //tag反推（tagger）
-        // this.shadowRoot.querySelector("#tagger图生文_tab").onclick =
-        // () => {
-        //   this.result.fillType = "inpaint_tab";
-        //   localStorage.setItem("tempPngInfo", JSON.stringify(this.result));
-        //   TaggerFormFill();
-        // };
         }
         else{
-          // this.shadowRoot.querySelector("#tagger图生文_tab").style.color=''
           this.shadowRoot.querySelector("#tab_pnginfo > div > div > div:nth-child(2) > div:nth-child(3)").innerText = res[0].text
       }
         //js对象形式转化
