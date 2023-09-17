@@ -239,7 +239,7 @@ def rec_config_json():
         json_content["outdir_extras_samples"] = "/content/drive/MyDrive/outputs/extras-images"
         json_content["outdir_txt2img_grids"] = "/content/drive/MyDrive/outputs/txt2img-grids"
         json_content["outdir_img2img_grids"] = "/content/drive/MyDrive/outputs/img2img-grids"
-    with open('/content/colabtools/config.json', 'w') as configFile:
+    with open(f'{params["dir"]}/config.json', 'w') as configFile:
         json.dump(json_content, configFile, ensure_ascii=False, indent=4)
 
 
@@ -248,22 +248,22 @@ if params["config"]== "False":
 else:
     res_config_json = find_config_json('/content/drive/', 'config.json')
     print(res_config_json)
-    subprocess.run(f"cp {res_config_json} /content/colabtools/config.json", shell=True)
+    subprocess.run(f'cp {res_config_json} {params["dir"]}/config.json', shell=True)
 
 # 图片自动下载脚本
 if params["download"]== "True":
-    subprocess.run([wget_path, '-O', '/content/colabtools/javascript/png_auto_download.js', 'https://github.com/s4afa451dgf415f/colab_stable_diffusion/raw/main/png_auto_download.js'], check=True)
+    subprocess.run([wget_path, '-O', f'{params["dir"]}/javascript/png_auto_download.js', 'https://github.com/s4afa451dgf415f/colab_stable_diffusion/raw/main/png_auto_download.js'], check=True)
 else:
-    if os.path.exists('/content/colabtools/javascript/png_auto_downloadjs'):
-        os.remove(f'/content/colabtools/javascript/png_auto_download.js')
+    if os.path.exists(f'{params["dir"]}/javascript/png_auto_downloadjs'):
+        os.remove(f'{params["dir"]}/javascript/png_auto_download.js')
 
 # anapnoe版本
 if params["ui"] == "anapnoe手机端完美适配":
     # png_info脚本
-    subprocess.run([wget_path, '-O', '/content/colabtools/javascript/PNG_info_web.js',
+    subprocess.run([wget_path, '-O', f'{params["dir"]}/javascript/PNG_info_web.js',
                     'https://github.com/s4afa451dgf415f/colab_stable_diffusion/raw/main/PNG_info_web.js'],
                    check=True)
-    with open('/content/colabtools/modules/ui.py', 'r') as readFile:
+    with open(f'{params["dir"]}/modules/ui.py', 'r') as readFile:
         content = readFile.read()
     content = content.replace('''                for tabname, button in buttons.items():
                     parameters_copypaste.register_paste_params_button(parameters_copypaste.ParamBinding(
@@ -278,15 +278,15 @@ if params["ui"] == "anapnoe手机端完美适配":
     content = content.replace('''["txt2img", "img2img", "inpaint", "extras"]''',
                               '["txt2img", "img2img", "inpaint", "tagger图生文"]')
 
-    with open('/content/colabtools/modules/ui.py', 'w') as writeFile:
+    with open(f'{params["dir"]}/modules/ui.py', 'w') as writeFile:
         writeFile.write(content)
 
     # png_info脚本兼容
-    with open('/content/colabtools/javascript/PNG_info_web.js', 'r') as readFile:
+    with open(f'{params["dir"]}/javascript/PNG_info_web.js', 'r') as readFile:
         content = readFile.read()
     content = content.replace('''querySelector("#tab_pnginfo > div > div > div:nth-child(2) > div:nth-child(3)")''',
                               'querySelector("#tab_pnginfo > div > div>div>div:nth-child(4)")')
-    with open('/content/colabtools/javascript/PNG_info_web.js', 'w') as writeFile:
+    with open(f'{params["dir"]}/javascript/PNG_info_web.js', 'w') as writeFile:
         writeFile.write(content)
 
 # automatic111版本
@@ -302,14 +302,14 @@ else:
   }
   }
   '''
-    with open('/content/colabtools/style.css', 'a') as cssFile:
+    with open(f'{params["dir"]}/style.css', 'a') as cssFile:
         cssFile.write(css_content)
     # png_info脚本
-    subprocess.run([wget_path, '-O', '/content/colabtools/javascript/PNG_info_web.js',
+    subprocess.run([wget_path, '-O', f'{params["dir"]}/javascript/PNG_info_web.js',
                     'https://github.com/s4afa451dgf415f/colab_stable_diffusion/raw/main/PNG_info_web.js'],
                    check=True)
     # 拦截png_info
-    with open('/content/colabtools/modules/ui.py', 'r') as readFile:
+    with open(f'{params["dir"]}/modules/ui.py', 'r') as readFile:
         content = readFile.read()
     content = content.replace('''                for tabname, button in buttons.items():
                     parameters_copypaste.register_paste_params_button(parameters_copypaste.ParamBinding(
@@ -323,5 +323,5 @@ else:
         )''', '')
     content = content.replace('''["txt2img", "img2img", "inpaint", "extras"]''',
                               '["txt2img", "img2img", "inpaint", "tagger图生文"]')
-    with open('/content/colabtools/modules/ui.py', 'w') as writeFile:
+    with open(f'{params["dir"]}/modules/ui.py', 'w') as writeFile:
         writeFile.write(content)
