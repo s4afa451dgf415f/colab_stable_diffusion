@@ -33,7 +33,6 @@
 
 - Advantage: No need for a graphics card, can be used on mobile phones, and has fast cloud-based processing speed. Disadvantage: Needs to be redeployed every day and has time limitations.
 - This project is a free and open-source project and will continue to be maintained and updated. Please report any advertising motives.
-- Colab has always been free and conscience. If you feel that the image generation speed is slow or the duration is short, or it's too troublesome, you can also support Google.
 - Due to the large number of users, the time limit for each Google Colab account is about 4-6 hours. You can create multiple accounts and add editing permissions to other accounts in the main account's JSON folder to achieve shared usage among all accounts.
 - The first startup within a day takes about 7 minutes to download plugin model dependencies. Please be patient. It will be much faster for subsequent startups.
 - You can also run Colab notebooks on your computer and access them through the domain provided in Step 4 using your phone.
@@ -60,6 +59,10 @@
 <div id="Update">
 <h2>📔 Changelog</h2>
 
+### v2.2.0(23/11/12)
+- The Xformer has been updated to comply with the Torch version in Colab.
+- Resolving the error in httpx
+- According to Google's requirements, the free version of Colab is no longer available. Please purchase Colab Pro to continue using it.
 ### v2.2.0(23/08/26)
 - Partially refactored the download management module to support downloading with specified path fields.
 - Upgraded webui to the latest version 1.5.1 and changed 1.3.0 to stable version.
