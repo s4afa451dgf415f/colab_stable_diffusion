@@ -59,6 +59,8 @@
 <div id="Update">
 <h2>📔 Changelog</h2>
 
+### v2.2.1(23/11/29)
+- New version 1.6.0 added, which supports SDXL.
 ### v2.2.0(23/11/12)
 - The Xformer has been updated to comply with the Torch version in Colab.
 - Resolving the error in httpx
