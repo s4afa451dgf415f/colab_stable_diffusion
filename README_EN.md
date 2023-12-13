@@ -59,6 +59,9 @@
 <div id="Update">
 <h2>📔 Changelog</h2>
 
+### v2.2.2(23/12/14)
+- Support to input cookie for downloading Civitai models
+- The interaction of the UI for 2.1model management  optimized.
 ### v2.2.1(23/11/29)
 - New version 1.6.0 added, which supports SDXL.
 ### v2.2.0(23/11/12)
