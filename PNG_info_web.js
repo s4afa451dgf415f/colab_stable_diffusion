@@ -257,6 +257,7 @@
   const inputEvent = new Event("input");
   const changeEvent = new Event("change");
   let shadowRoot = null;
+  let version_more_16 = null;
   let result = {};
   let png_info_blob = {};
   //readNovelAITag函数参考于秋叶大佬并进行了优化
@@ -347,16 +348,16 @@ let imgStorage=(img)=>{
   //此节点render-tree是否已形成
   function isElementRendered(el) {
     const style = window.getComputedStyle(el);
-  
+
     if (style.getPropertyValue('display') === 'none') {
       return false;
     }
-  
+
     // 判断是否有宽高
     if (el.offsetWidth <= 0 || el.offsetHeight <= 0) {
       return false;
     }
-  
+
     return true;
   }
 
@@ -459,9 +460,9 @@ let imgStorage=(img)=>{
     const changeEvent = new Event("change", {
       bubbles: true,
     });
-    shadowRoot.querySelector('[class="tab-nav scroll-hide svelte-1g805jl"]').children[0].click();
-
-    shadowRoot.querySelectorAll(
+    shadowRoot.querySelector("#tabs .tab-nav").children[0].click();
+    if(!!result.Clipskip){
+       shadowRoot.querySelectorAll(
       "#setting_CLIP_stop_at_last_layers input"
     )[0].value = Number(result.Clipskip);
     shadowRoot
@@ -470,11 +471,11 @@ let imgStorage=(img)=>{
 
     shadowRoot.querySelectorAll(
       "#setting_CLIP_stop_at_last_layers input"
-    )[1].value = Number(result.Clipskip);
+    )[1].value = Number(result.Clipskip||2);
     shadowRoot
       .querySelectorAll("#setting_CLIP_stop_at_last_layers input")[1]
       .dispatchEvent(inputEvent);
-
+    }
     shadowRoot.querySelector("#txt2img_prompt textarea").value = result.prompt;
     shadowRoot
       .querySelector("#txt2img_prompt textarea")
@@ -537,17 +538,8 @@ let imgStorage=(img)=>{
     shadowRoot.querySelector("#txt2img_seed input").dispatchEvent(inputEvent);
 
     //高清修复
-    shadowRoot.querySelector("#txt2img_enable_hr input").checked =
-      !!result.Hiresupscaler;
-    shadowRoot
-      .querySelector("#txt2img_enable_hr input")
-      .dispatchEvent(changeEvent);
-
-    if (!!result.Hiresupscaler) {
-      const inputElement = document.querySelector(
-        '#txt2img_hr_upscaler > label > div > div.wrap-inner> div > input'
-      );
-      const mousevent = new MouseEvent("mousedown", {
+    //如果存在图片参数则对下拉框进行focus和mousevent
+    const mousevent = new MouseEvent("mousedown", {
         view: window,
         bubbles: true,
         cancelable: true,
@@ -557,15 +549,69 @@ let imgStorage=(img)=>{
         bubbles: true,
         cancelable: true,
       });
-      inputElement.dispatchEvent(focus);
-      queueMicrotask(() => {
-        //将函数加入到任务队列待下一次轮询在执行
-        const listElem = shadowRoot.querySelector(
-          `[data-value="${result.Hiresupscaler}"]`
-        );
-        listElem.dispatchEvent(mousevent);
-      });
+    //sd版本小于1.6.0
+    if(!this.version_more_16){
+      if (!!result.Hiresupscaler) {
+      //选择高清修复
+      shadowRoot.querySelector("#txt2img_enable_hr input").checked =true
+      shadowRoot.querySelector("#txt2img_enable_hr input").dispatchEvent(changeEvent);
+      }
     }
+    //高清
+    //hr放大器
+    const hr_upscaler_element = document.querySelector(
+      '#txt2img_hr_upscaler > label > div > div.wrap-inner> div > input'
+    );
+    hr_upscaler_element.dispatchEvent(focus);
+    //将函数加入到任务队列待下一次轮询延迟下拉框加载完毕后执行
+    queueMicrotask(() => {
+        const Hiresupscaler_list_elem = shadowRoot.querySelector(
+          `[data-value="${result.Hiresupscaler || "None"}"]`
+        );
+        Hiresupscaler_list_elem.dispatchEvent(mousevent);
+    });
+
+    //hr采样器
+    const hr_sampler_element = document.querySelector(
+        "#hr_sampler > label > div > div.wrap-inner> div > input"
+    )
+    //用户开启了hr采样器选项
+    if(!!hr_sampler_element){
+      hr_sampler_element.dispatchEvent(focus);
+      queueMicrotask(() => {
+      //将函数加入到任务队列待下一次轮询延迟下拉框加载完毕后执行
+      const Hiressampler_list_elem = shadowRoot.querySelector(
+        `[data-value="${result. Hiressampler || "Use same sampler"}"]`
+      );
+      Hiressampler_list_elem.dispatchEvent(mousevent);
+    });
+    }
+
+
+    //v1.6.0新增
+    const hr_checkpoint_element = document.querySelector(
+        "#hr_checkpoint > label > div > div.wrap-inner > div > input"
+    )
+    //用户开启了hr_ckpt选项
+    if(!!hr_checkpoint_element){
+      hr_checkpoint_element.dispatchEvent(focus);
+      queueMicrotask(() => {
+      // 将函数加入到任务队列待下一次轮询延迟下拉框加载完毕后执行
+      var Hirescheckpoint=result.Hirescheckpoint
+          // ?result.Hirescheckpoint.replace(/ \[.*\]$/,""):""
+        console.log(Hirescheckpoint)
+        const Hirescheckpoint_list_elem = document.querySelector(
+        `[data-value="${Hirescheckpoint || "Use same checkpoint"}"]`
+      );
+      try {
+      Hirescheckpoint_list_elem.dispatchEvent(mousevent);
+    } catch (error) {
+      console.error(`出错了，可能没有指定的ckpt:${Hirescheckpoint}`);
+    }
+    });
+    }
+
+
 
     shadowRoot.querySelectorAll("#txt2img_hires_steps input")[0].value =
       Number(result.Hiressteps) || 0;
@@ -602,7 +648,23 @@ let imgStorage=(img)=>{
     shadowRoot
       .querySelectorAll("#txt2img_hr_scale input")[1]
       .dispatchEvent(inputEvent);
+    //用户是否开启了高清prompt
+    if(!!shadowRoot.querySelector("#hires_prompt > label > textarea")){
+      shadowRoot.querySelector("#hires_prompt > label > textarea").value =
+        result.HiresPrompt;
+    shadowRoot
+      .querySelector("#hires_prompt > label > textarea")
+      .dispatchEvent(inputEvent);
+    }
+    if(!!shadowRoot.querySelector("#hires_neg_prompt > label > textarea")){
+      shadowRoot.querySelector("#hires_neg_prompt > label > textarea").value =
+        result.HiresNegativePrompt;
+    shadowRoot
+      .querySelector("#hires_neg_prompt > label > textarea")
+      .dispatchEvent(inputEvent);
+    }
   };
+
 
   //图生图
   let img2ImgFormFill = () => {
@@ -611,14 +673,16 @@ let imgStorage=(img)=>{
     const changeEvent = new Event("change", {
       bubbles: true,
     });
-      this.shadowRoot.querySelector('[class="tab-nav scroll-hide svelte-1g805jl"]').children[1].click();
+      this.shadowRoot.querySelector("#tabs .tab-nav").children[1].click();
       this.shadowRoot.querySelectorAll('#mode_img2img button')[0].click()
-
+    if(!!result.Clipskip){
       this.shadowRoot.querySelectorAll('#setting_CLIP_stop_at_last_layers input')[0].value = Number(result.Clipskip)
       this.shadowRoot.querySelectorAll('#setting_CLIP_stop_at_last_layers input')[0].dispatchEvent(inputEvent);
 
       this.shadowRoot.querySelectorAll('#setting_CLIP_stop_at_last_layers input')[1].value = Number(result.Clipskip)
       this.shadowRoot.querySelectorAll('#setting_CLIP_stop_at_last_layers input')[1].dispatchEvent(inputEvent);
+    }
+
 
       this.shadowRoot.querySelector('#img2img_prompt textarea').value = result.prompt
       this.shadowRoot.querySelector('#img2img_prompt textarea').dispatchEvent(inputEvent);
@@ -678,14 +742,15 @@ let imgStorage=(img)=>{
         temp.querySelectorAll('canvas').forEach(e => {e.style.width = '100%';console.log(e.style.width)});
     }
   // }
-      this.shadowRoot.querySelector('[class="tab-nav scroll-hide svelte-1g805jl"]').children[1].click();
+      this.shadowRoot.querySelector("#tabs .tab-nav").children[1].click();
       this.shadowRoot.querySelectorAll('#mode_img2img button')[2].click()
-      this.shadowRoot.querySelectorAll('#setting_CLIP_stop_at_last_layers input')[0].value = Number(result.Clipskip)
-      this.shadowRoot.querySelectorAll('#setting_CLIP_stop_at_last_layers input')[0].dispatchEvent(inputEvent);
+      if(!!result.Clipskip) {
+        this.shadowRoot.querySelectorAll('#setting_CLIP_stop_at_last_layers input')[0].value = Number(result.Clipskip)
+        this.shadowRoot.querySelectorAll('#setting_CLIP_stop_at_last_layers input')[0].dispatchEvent(inputEvent);
 
-      this.shadowRoot.querySelectorAll('#setting_CLIP_stop_at_last_layers input')[1].value = Number(result.Clipskip)
-      this.shadowRoot.querySelectorAll('#setting_CLIP_stop_at_last_layers input')[1].dispatchEvent(inputEvent);
-
+        this.shadowRoot.querySelectorAll('#setting_CLIP_stop_at_last_layers input')[1].value = Number(result.Clipskip)
+        this.shadowRoot.querySelectorAll('#setting_CLIP_stop_at_last_layers input')[1].dispatchEvent(inputEvent);
+      }
       this.shadowRoot.querySelector('#img2img_prompt textarea').value = result.prompt
       this.shadowRoot.querySelector('#img2img_prompt textarea').dispatchEvent(inputEvent);
 
@@ -725,31 +790,32 @@ let imgStorage=(img)=>{
   };
 
 
-  let TaggerFormFill=()=>{
-    let result = this.result;
-    const inputEvent = new Event("input");
-    const changeEvent = new Event("change", {
-      bubbles: true,
-    });
-    let taggerNode=null
-      let menu=[...document.querySelector('[class="tab-nav scroll-hide svelte-1g805jl"]').children]
-      menu.forEach(e=>{try{if(e.innerText=="Tag反推(Tagger)")taggerNode=e;throw error()}catch(err){}})
-      console.log(taggerNode)
-      taggerNode.click()
-
-    //   //图生图调用pnginfo的png
-    const file = new File([this.png_info_blob], 'example.png');
-    const dataTransfer = new DataTransfer();
-    dataTransfer.items.add(file);
-    const fileList = dataTransfer.files;
-    console.log([this.shadowRoot.querySelector(" div.image-container > div > input")])
-    this.shadowRoot.querySelector(" div.image-container > div > input").files = fileList;
-    this.shadowRoot.querySelector(" div.image-container > div > input").dispatchEvent(changeEvent);
-  }
+  // let TaggerFormFill=()=>{
+  //   let result = this.result;
+  //   const inputEvent = new Event("input");
+  //   const changeEvent = new Event("change", {
+  //     bubbles: true,
+  //   });
+  //   let taggerNode=null
+  //     let menu=[...document.querySelector("#tabs .tab-nav").children]
+  //     menu.forEach(e=>{try{if(e.innerText=="Tag反推(Tagger)")taggerNode=e;throw error()}catch(err){}})
+  //     console.log(taggerNode)
+  //     taggerNode.click()
+  //
+  //   //   //图生图调用pnginfo的png
+  //   const file = new File([this.png_info_blob], 'example.png');
+  //   const dataTransfer = new DataTransfer();
+  //   dataTransfer.items.add(file);
+  //   const fileList = dataTransfer.files;
+  //   console.log([this.shadowRoot.querySelector(" div.image-container > div > input")])
+  //   this.shadowRoot.querySelector(" div.image-container > div > input").files = fileList;
+  //   this.shadowRoot.querySelector(" div.image-container > div > input").dispatchEvent(changeEvent);
+  // }
 
   //PNGinfo事件
   async function png_info_edit() {
     let png_info = await delayPng_info();
+    this.version_more_16 =(Number(this.shadowRoot.querySelector("#footer > div.versions > a").innerText.replace(/\D/g, '')) >= 160)
     this.result = JSON.parse(localStorage.getItem("tempPngInfo")) || {};
     if (this.result.fillType === "txt2img") {
       txt2ImgFormFill();
@@ -775,33 +841,44 @@ let imgStorage=(img)=>{
         let res = await readNovelAITag(png_info_blob);
         if(!res.length){
           this.shadowRoot.querySelector("#tab_pnginfo > div > div > div:nth-child(2) > div:nth-child(3)").innerText ="这不是一张stablediffusion图片"
-          this.shadowRoot.querySelector("#tagger图生文_tab").style.color='red'
+          // this.shadowRoot.querySelector("#tagger图生文_tab").style.color='red'
           //tag反推（tagger）
-        this.shadowRoot.querySelector("#tagger图生文_tab").onclick =
-        () => {
-          this.result.fillType = "inpaint_tab";
-          localStorage.setItem("tempPngInfo", JSON.stringify(this.result));
-          TaggerFormFill();
-        };
+        // this.shadowRoot.querySelector("#tagger图生文_tab").onclick =
+        // () => {
+        //   this.result.fillType = "inpaint_tab";
+        //   localStorage.setItem("tempPngInfo", JSON.stringify(this.result));
+        //   TaggerFormFill();
+        // };
         }
         else{
-          this.shadowRoot.querySelector("#tagger图生文_tab").style.color=''
+          // this.shadowRoot.querySelector("#tagger图生文_tab").style.color=''
           this.shadowRoot.querySelector("#tab_pnginfo > div > div > div:nth-child(2) > div:nth-child(3)").innerText = res[0].text
       }
         //js对象形式转化
         const result = {};
         // const match = inputString.match(/(?<=prompt:)(.*)(?=Negative prompt:)/s)[0].trim();]
-        result.prompt = res[0].text.match(/(.*)(?=Negative prompt:)/s)[0].trim();
-        result.negativePrompt = res[0].text
-          .match(/(?<=Negative prompt:)(.*)(?=Steps:)/s)[0]
-          .trim();
-        let resArr = res[0].text
-          .split(result.negativePrompt)[1]
-          .trim()
-          .split(",");
+        let tempRes=res[0].text
+        console.log(1223)
+        result.prompt = res[0].text.match(/(.+)(?=(\nNegative prompt))/s)?
+            res[0].text.match(/(.+)(?=(\nNegative prompt))/s)[0].trim():res[0].text.match(/(.+)(?=(\nSteps))/s)[0].trim()
+      console.log(result.prompt)
+        result.negativePrompt = res[0].text.match(/(?<=Negative prompt:)(.*)(?=\nSteps:)/s)?
+             res[0].text.match(/(?<=Negative prompt:)(.*)(?=\nSteps:)/s)[0]:""
+      //否定预查来确认第一个或者最后一个来确保不重复
+        result.HiresPrompt = res[0].text.match(/(?<=Hires prompt:)(.*?)(?=(?!Hires negative prompt) Hires upscale|Hires negative prompt)/s)?
+             res[0].text.match(/(?<=Hires prompt:)(.*?)(?=(?!Hires negative prompt) Hires upscale|Hires negative prompt)/s)[0]:""
+        result.HiresNegativePrompt =res[0].text.match(/(?<=Hires negative prompt:)(.*)(?=Hires upscale)/s)?
+             res[0].text.match(/(?<=Hires negative prompt:)(.*)(?=Hires upscale[^r])/s)[0].trim():""
+      console.log(result.prompt)
+        tempRes=tempRes.replace(`${result.prompt}`,"").replace(`\nNegative prompt:${result.negativePrompt}`,"")
+            .replace(` Hires prompt:${result.HiresPrompt}`,"").replace(` Hires negative prompt:${result.HiresNegativePrompt}`,"")
+      console.log(tempRes)
+        let resArr = tempRes.trim().split(",");
+        console.log(resArr)
         resArr.forEach((e) => {
-          result[e.split(":")[0].replace(/\s+/g, "")] = e.split(":")[1].trim();
+          result[e.split(":")[0].replace(/\s+/g, "")] = e.split(":")[1].replace(/<comma>/g, ",").replace(/<maohao>/g, ":").trim();
         });
+        console.log(result)
         this.result = result;
 
         //txt2img
