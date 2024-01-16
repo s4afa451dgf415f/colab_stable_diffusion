@@ -556,6 +556,13 @@ let imgStorage=(img)=>{
       shadowRoot.querySelector("#txt2img_enable_hr input").checked =true
       shadowRoot.querySelector("#txt2img_enable_hr input").dispatchEvent(changeEvent);
       }
+    }else{
+      if (!!result.Hiresupscaler) {
+        shadowRoot.querySelector("#txt2img_hr > div:nth-child(3)").style.display ="block"
+      }
+      else{
+        shadowRoot.querySelector("#txt2img_hr > div:nth-child(3)").style.display ="none"
+      }
     }
     //高清
     //hr放大器
@@ -599,7 +606,6 @@ let imgStorage=(img)=>{
       // 将函数加入到任务队列待下一次轮询延迟下拉框加载完毕后执行
       var Hirescheckpoint=result.Hirescheckpoint
           // ?result.Hirescheckpoint.replace(/ \[.*\]$/,""):""
-        console.log(Hirescheckpoint)
         const Hirescheckpoint_list_elem = document.querySelector(
         `[data-value="${Hirescheckpoint || "Use same checkpoint"}"]`
       );
@@ -718,7 +724,6 @@ let imgStorage=(img)=>{
     const dataTransfer = new DataTransfer();
     dataTransfer.items.add(file);
     const fileList = dataTransfer.files;
-    console.log([this.shadowRoot.querySelector("#img2img_image input")])
     this.shadowRoot.querySelector("#img2img_image input").files = fileList;
     this.shadowRoot.querySelector('#img2img_image input').dispatchEvent(changeEvent);
   };
@@ -858,27 +863,33 @@ let imgStorage=(img)=>{
         const result = {};
         // const match = inputString.match(/(?<=prompt:)(.*)(?=Negative prompt:)/s)[0].trim();]
         let tempRes=res[0].text
-        console.log(1223)
         result.prompt = res[0].text.match(/(.+)(?=(\nNegative prompt))/s)?
-            res[0].text.match(/(.+)(?=(\nNegative prompt))/s)[0].trim():res[0].text.match(/(.+)(?=(\nSteps))/s)[0].trim()
-      console.log(result.prompt)
+            res[0].text.match(/(.+)(?=(\nNegativeck prompt))/s)[0].trim():res[0].text.match(/(.+)(?=(\nSteps))/s)[0].trim()
         result.negativePrompt = res[0].text.match(/(?<=Negative prompt:)(.*)(?=\nSteps:)/s)?
              res[0].text.match(/(?<=Negative prompt:)(.*)(?=\nSteps:)/s)[0]:""
       //否定预查来确认第一个或者最后一个来确保不重复
-        result.HiresPrompt = res[0].text.match(/(?<=Hires prompt:)(.*?)(?=(?!Hires negative prompt) Hires upscale|Hires negative prompt)/s)?
-             res[0].text.match(/(?<=Hires prompt:)(.*?)(?=(?!Hires negative prompt) Hires upscale|Hires negative prompt)/s)[0]:""
-        result.HiresNegativePrompt =res[0].text.match(/(?<=Hires negative prompt:)(.*)(?=Hires upscale)/s)?
-             res[0].text.match(/(?<=Hires negative prompt:)(.*)(?=Hires upscale[^r])/s)[0].trim():""
-      console.log(result.prompt)
-        tempRes=tempRes.replace(`${result.prompt}`,"").replace(`\nNegative prompt:${result.negativePrompt}`,"")
-            .replace(` Hires prompt:${result.HiresPrompt}`,"").replace(` Hires negative prompt:${result.HiresNegativePrompt}`,"")
-      console.log(tempRes)
+        let HiresPrompt = res[0].text.match(/(?<=Hires prompt: )(.*?)(?=(?!Hires negative prompt) Hires upscale|Hires negative prompt)/s)?
+             res[0].text.match(/(?<=Hires prompt: )(.*?)(?=(?!Hires negative prompt), Hires upscale|, Hires negative prompt)/s)[0]:""
+      // console.log(HiresPrompt)
+        result.HiresPrompt=HiresPrompt.includes(",")?HiresPrompt.replace(/^"|"$/g, "").replace(/\\\\/g,"\\"):HiresPrompt
+
+        let HiresNegativePrompt =res[0].text.match(/(?<=Hires negative prompt:)(.*)(?=Hires upscale)/s)?
+             res[0].text.match(/(?<=Hires negative prompt: )(.*)(?=, Hires upscale[^r])/s)[0].trim():""
+        result.HiresNegativePrompt=HiresNegativePrompt.includes(",")?HiresNegativePrompt.replace(/^"|"$/g, "").replace(/\\\\/g,"\\"):HiresNegativePrompt
+      // console.log(result.prompt)
+        tempRes=tempRes.replace(`${result.prompt}`,"").replace(`\nNegative prompt: ${result.negativePrompt}`,"")
+            .replace(` Hires prompt: ${HiresPrompt},`,"").replace(` Hires negative prompt: ${HiresNegativePrompt}, `,"")
+      // console.log(tempRes)
         let resArr = tempRes.trim().split(",");
-        console.log(resArr)
+        // console.log(resArr)
         resArr.forEach((e) => {
-          result[e.split(":")[0].replace(/\s+/g, "")] = e.split(":")[1].replace(/<comma>/g, ",").replace(/<maohao>/g, ":").trim();
+          try{result[e.split(":")[0].replace(/\s+/g, "")] = e.split(":")[1].
+          replace(/<comma>/g, ",").replace(/<maohao>/g, ":").trim();}
+          catch(err){
+            console.log(err+"e")
+          }
         });
-        console.log(result)
+        // console.log(result)
         this.result = result;
 
         //txt2img
