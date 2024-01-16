@@ -864,7 +864,7 @@ let imgStorage=(img)=>{
         // const match = inputString.match(/(?<=prompt:)(.*)(?=Negative prompt:)/s)[0].trim();]
         let tempRes=res[0].text
         result.prompt = res[0].text.match(/(.+)(?=(\nNegative prompt))/s)?
-            res[0].text.match(/(.+)(?=(\nNegativeck prompt))/s)[0].trim():res[0].text.match(/(.+)(?=(\nSteps))/s)[0].trim()
+            res[0].text.match(/(.+)(?=(\nNegative prompt))/s)[0].trim():res[0].text.match(/(.+)(?=(\nSteps))/s)[0].trim()
         result.negativePrompt = res[0].text.match(/(?<=Negative prompt:)(.*)(?=\nSteps:)/s)?
              res[0].text.match(/(?<=Negative prompt:)(.*)(?=\nSteps:)/s)[0]:""
       //否定预查来确认第一个或者最后一个来确保不重复
