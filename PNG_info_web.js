@@ -461,6 +461,9 @@ let imgStorage=(img)=>{
       bubbles: true,
     });
     shadowRoot.querySelector("#tabs .tab-nav").children[0].click();
+    if(!!result.Hiresupscaler && !shadowRoot.querySelector("#txt2img_hr > div.label-wrap.open")){
+      shadowRoot.querySelector("#txt2img_hr > div.label-wrap").click();
+    }
     if(!!result.Clipskip){
        shadowRoot.querySelectorAll(
       "#setting_CLIP_stop_at_last_layers input"
@@ -556,14 +559,15 @@ let imgStorage=(img)=>{
       shadowRoot.querySelector("#txt2img_enable_hr input").checked =true
       shadowRoot.querySelector("#txt2img_enable_hr input").dispatchEvent(changeEvent);
       }
-    }else{
-      if (!!result.Hiresupscaler) {
-        shadowRoot.querySelector("#txt2img_hr > div:nth-child(3)").style.display ="block"
-      }
-      else{
-        shadowRoot.querySelector("#txt2img_hr > div:nth-child(3)").style.display ="none"
-      }
     }
+    // else{
+      // if (!!result.Hiresupscaler) {
+      //   shadowRoot.querySelector("#txt2img_hr > div:nth-child(3)").style.display ="block"
+      // }
+      // else{
+      //   shadowRoot.querySelector("#txt2img_hr > div:nth-child(3)").style.display ="none"
+      // }
+    // }
     //高清
     //hr放大器
     const hr_upscaler_element = document.querySelector(
@@ -617,57 +621,57 @@ let imgStorage=(img)=>{
     });
     }
 
+    if (!!result.Hiresupscaler) {
+        shadowRoot.querySelectorAll("#txt2img_hires_steps input")[0].value =
+        Number(result.Hiressteps) || 0;
+      shadowRoot
+        .querySelectorAll("#txt2img_hires_steps input")[0]
+        .dispatchEvent(inputEvent);
 
+      shadowRoot.querySelectorAll("#txt2img_hires_steps input")[1].value =
+        Number(result.Hiressteps) || 0;
+      shadowRoot
+        .querySelectorAll("#txt2img_hires_steps input")[1]
+        .dispatchEvent(inputEvent);
 
-    shadowRoot.querySelectorAll("#txt2img_hires_steps input")[0].value =
-      Number(result.Hiressteps) || 0;
-    shadowRoot
-      .querySelectorAll("#txt2img_hires_steps input")[0]
-      .dispatchEvent(inputEvent);
+      shadowRoot.querySelectorAll("#txt2img_denoising_strength input")[0].value =
+        Number(result.Denoisingstrength) || 0;
+      shadowRoot
+        .querySelectorAll("#txt2img_denoising_strength input")[0]
+        .dispatchEvent(inputEvent);
 
-    shadowRoot.querySelectorAll("#txt2img_hires_steps input")[1].value =
-      Number(result.Hiressteps) || 0;
-    shadowRoot
-      .querySelectorAll("#txt2img_hires_steps input")[1]
-      .dispatchEvent(inputEvent);
+      shadowRoot.querySelectorAll("#txt2img_denoising_strength input")[1].value =
+        Number(result.Denoisingstrength) || 0;
+      shadowRoot
+        .querySelectorAll("#txt2img_denoising_strength input")[1]
+        .dispatchEvent(inputEvent);
 
-    shadowRoot.querySelectorAll("#txt2img_denoising_strength input")[0].value =
-      Number(result.Denoisingstrength) || 0;
-    shadowRoot
-      .querySelectorAll("#txt2img_denoising_strength input")[0]
-      .dispatchEvent(inputEvent);
+      shadowRoot.querySelectorAll("#txt2img_hr_scale input")[0].value =
+        Number(result.Hiresupscale) || 1;
+      shadowRoot
+        .querySelectorAll("#txt2img_hr_scale input")[0]
+        .dispatchEvent(inputEvent);
 
-    shadowRoot.querySelectorAll("#txt2img_denoising_strength input")[1].value =
-      Number(result.Denoisingstrength) || 0;
-    shadowRoot
-      .querySelectorAll("#txt2img_denoising_strength input")[1]
-      .dispatchEvent(inputEvent);
-
-    shadowRoot.querySelectorAll("#txt2img_hr_scale input")[0].value =
-      Number(result.Hiresupscale) || 1;
-    shadowRoot
-      .querySelectorAll("#txt2img_hr_scale input")[0]
-      .dispatchEvent(inputEvent);
-
-    shadowRoot.querySelectorAll("#txt2img_hr_scale input")[1].value =
-      Number(result.Hiresupscale) || 1;
-    shadowRoot
-      .querySelectorAll("#txt2img_hr_scale input")[1]
-      .dispatchEvent(inputEvent);
-    //用户是否开启了高清prompt
-    if(!!shadowRoot.querySelector("#hires_prompt > label > textarea")){
-      shadowRoot.querySelector("#hires_prompt > label > textarea").value =
-        result.HiresPrompt;
-    shadowRoot
-      .querySelector("#hires_prompt > label > textarea")
-      .dispatchEvent(inputEvent);
-    }
-    if(!!shadowRoot.querySelector("#hires_neg_prompt > label > textarea")){
-      shadowRoot.querySelector("#hires_neg_prompt > label > textarea").value =
-        result.HiresNegativePrompt;
-    shadowRoot
-      .querySelector("#hires_neg_prompt > label > textarea")
-      .dispatchEvent(inputEvent);
+      shadowRoot.querySelectorAll("#txt2img_hr_scale input")[1].value =
+        Number(result.Hiresupscale) || 1;
+      shadowRoot
+        .querySelectorAll("#txt2img_hr_scale input")[1]
+        .dispatchEvent(inputEvent);
+      //用户是否开启了高清prompt
+      if(!!shadowRoot.querySelector("#hires_prompt > label > textarea")){
+        shadowRoot.querySelector("#hires_prompt > label > textarea").value =
+          result.HiresPrompt;
+      shadowRoot
+        .querySelector("#hires_prompt > label > textarea")
+        .dispatchEvent(inputEvent);
+      }
+      if(!!shadowRoot.querySelector("#hires_neg_prompt > label > textarea")){
+        shadowRoot.querySelector("#hires_neg_prompt > label > textarea").value =
+          result.HiresNegativePrompt;
+      shadowRoot
+        .querySelector("#hires_neg_prompt > label > textarea")
+        .dispatchEvent(inputEvent);
+      }
     }
   };
 
