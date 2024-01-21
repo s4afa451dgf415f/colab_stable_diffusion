@@ -461,7 +461,7 @@ let imgStorage=(img)=>{
       bubbles: true,
     });
     shadowRoot.querySelector("#tabs .tab-nav").children[0].click();
-    if(!!result.Hiresupscaler && !shadowRoot.querySelector("#txt2img_hr > div.label-wrap.open")){
+    if(!!this.version_more_16 && !!result.Hiresupscaler && !shadowRoot.querySelector("#txt2img_hr > div.label-wrap.open")){
       shadowRoot.querySelector("#txt2img_hr > div.label-wrap").click();
     }
     if(!!result.Clipskip){
