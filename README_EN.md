@@ -59,7 +59,7 @@
 <div id="Update">
 <h2>📔 Changelog</h2>
 
-### v2.2.3(23/1/15)
+### v2.2.3(24/1/15)
 - Update png_info javascript, fix some bugs, support version 1.6.0, and provide the option to turn it off.
 - Fix 3、cell and language issues（I rarely test the English version, so please actively submit any issues.）
 ### v2.2.2(23/12/14)
