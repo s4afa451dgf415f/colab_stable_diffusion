@@ -59,6 +59,8 @@
 <div id="Update">
 <h2>📔 Changelog</h2>
 
+### v.2.2.5(24/3/2)
+- Modify the sdxl parameters and recommend using tiledVAE to address the issue of insufficient memory in xlLora.
 ### v2.2.3(24/1/15)
 - Update png_info javascript, fix some bugs, support version 1.6.0, and provide the option to turn it off.
 - Fix 3、cell and language issues（I rarely test the English version, so please actively submit any issues.）
