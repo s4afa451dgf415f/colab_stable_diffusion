@@ -33,6 +33,21 @@
     window.URL.revokeObjectURL(url);
   });
 }
+    function getDataName(index){
+      const now = new Date();
+
+      // 获取年、月、日、时、分、秒
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+
+
+      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}${index}.png`;
+    }
+
 
   //t2i下载
   let t2idownload=(ParentNode)=>{
@@ -45,9 +60,8 @@
         {
           // console.log(mutation);
           t2iState='fufilled';
-          [...ParentNode.querySelectorAll('.thumbnail-item > img')].forEach(resNode=>{
-             let nameArr=resNode.src.split('/')
-            let name=decodeURIComponent(nameArr[nameArr.length-1])
+          [...ParentNode.querySelectorAll('.thumbnail-item > img')].forEach((resNode,index)=>{
+            let name=getDataName(index)
             downloadImage(resNode.src,name)
         })
           observer.disconnect();
@@ -72,9 +86,8 @@
         {
           // console.log(mutation);
           i2iState='fufilled';
-          [...ParentNode.querySelectorAll('.thumbnail-item > img')].forEach(resNode=>{
-             let nameArr=resNode.src.split('/')
-            let name=decodeURIComponent(nameArr[nameArr.length-1])
+          [...ParentNode.querySelectorAll('.thumbnail-item > img')].forEach((resNode,index)=>{
+            let name=getDataName(index)
             downloadImage(resNode.src,name)
         })
           observer.disconnect();
@@ -99,9 +112,8 @@
         {
           // console.log(mutation);
           extState='fufilled';
-          [...ParentNode.querySelectorAll('.thumbnail-item > img')].forEach(resNode=>{
-             let nameArr=resNode.src.split('/')
-            let name=decodeURIComponent(nameArr[nameArr.length-1])
+          [...ParentNode.querySelectorAll('.thumbnail-item > img')].forEach((resNode,index)=>{
+            let name=getDataName(index)
             downloadImage(resNode.src,name)
         })
           observer.disconnect();
